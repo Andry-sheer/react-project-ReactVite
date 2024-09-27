@@ -46,7 +46,6 @@ const Header = () => {
           Sing In
         </Button>
         </Link>
-
         <Navbar.Toggle />
       </div>
 
