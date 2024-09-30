@@ -3,13 +3,14 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { singInStart, singInSuccess, singInFailure } from '../redux/user/userSlice';
 
 const SingIn =()=> {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
-const navigate = useNavigate();
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error: errorMessage } = useSelector(state => state.user);
 
   const handleChange = (event) => {
     setFormData({...formData, [event.target.id]: event.target.value.trim() });
@@ -18,11 +19,10 @@ const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     if(!formData.email || !formData.password){
-      return setErrorMessage('Please fill out all fields.');
+      return dispatch(singInFailure('Please fill out all fields.'));
     }
     try {
-      setLoading(true);
-      setErrorMessage(null);
+      dispatch(singInStart());
       const res = await fetch('/api/auth/singin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -30,17 +30,15 @@ const navigate = useNavigate();
       });
       const data = await res.json();
         if(data.success === false){
-          return setErrorMessage(data.message);
+          dispatch(singInFailure(data.message));
         }
 
-        setLoading(false);
-
         if(res.ok){
+          dispatch(singInSuccess(data));
           navigate('/');
         }
     } catch (error) {
-      setErrorMessage(error.message);
-      setLoading(false);
+      dispatch(singInFailure(error.message));
     }
   };
 
