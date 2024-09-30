@@ -5,6 +5,7 @@ import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { singInStart, singInSuccess, singInFailure } from '../redux/user/userSlice';
+import OAuth from '../components/OAuth';
 
 const SingIn =()=> {
   const [formData, setFormData] = useState({});
@@ -97,6 +98,7 @@ const SingIn =()=> {
                     ) : 'Sing In'
                   }
               </Button>
+              <OAuth />
             </form>
 
             <div className='flex gap-2 text-sm mt-5'>
