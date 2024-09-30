@@ -59,7 +59,8 @@ const navigate = useNavigate();
                 rounded-lg text-white'>React-pro</span>
               <span className='font-bold'>Vite</span>
             </Link>
-            <p className='text-sm mt-5'>This is demo project React-vite</p>
+            <p className='text-sm mt-5'>This is demo project React-vite
+            you can sing-up, create Account or with Google</p>
           </div>
 
             {/* right */}
