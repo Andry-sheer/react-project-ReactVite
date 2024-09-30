@@ -1,13 +1,14 @@
 
-import { Button, Navbar, TextInput } from 'flowbite-react';
-import React from 'react';
+import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaSearch } from "react-icons/fa";
 import { IoMoonSharp } from "react-icons/io5";
+import { useSelector } from 'react-redux';
 
 const Header = () => {
 
   const path = useLocation().pathname;
+  const {currentUser} = useSelector(state => state.user)
 
   return (
     <Navbar className='border-b-2'>
@@ -40,12 +41,39 @@ const Header = () => {
         <Button className='w-12 h-9 hidden sm:inline' color='gray' pill>
         <IoMoonSharp />
         </Button>
+      {currentUser ? (
+        <Dropdown 
+          arrowIcon={false}
+          inline
+          label={
+            <Avatar 
+              alt='user'
+              img={currentUser.profilePicture}
+              rounded
+            />
+          }
+          >
+            <Dropdown.Header>
+              <span className='block text-sm'>@{currentUser.username}</span>
+              <span className='block text-sm font-medium truncate'>{currentUser.email}</span>
+            </Dropdown.Header>
 
-        <Link to='/sing-in'>
-        <Button gradientDuoTone='purpleToBlue' outline >
-          Sing In
-        </Button>
-        </Link>
+            <Link to={'/dashboard?tab=profile'}>
+              <Dropdown.Item>Profile</Dropdown.Item>
+            </Link>
+            <Dropdown.Divider/>
+            <Dropdown.Item>Sing Out</Dropdown.Item>
+        </Dropdown>
+      ) : 
+        (
+          <Link to='/sing-in'>
+          <Button gradientDuoTone='purpleToBlue' outline >
+            Sing In
+          </Button>
+          </Link>
+        )
+      }
+
         <Navbar.Toggle />
       </div> 
 
