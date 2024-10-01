@@ -2,13 +2,16 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaSearch } from "react-icons/fa";
-import { IoMoonSharp } from "react-icons/io5";
-import { useSelector } from 'react-redux';
+import { IoMoonSharp, IoSunnySharp } from "react-icons/io5";
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTheme } from '../redux/theme/themeSlice';
 
 const Header = () => {
 
   const path = useLocation().pathname;
-  const {currentUser} = useSelector(state => state.user)
+  const {currentUser} = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  const { theme } = useSelector((state)=> state.theme);
 
   return (
     <Navbar className='border-b-2'>
@@ -38,8 +41,9 @@ const Header = () => {
       </Button>
 
       <div className='flex gap-2 md:order-2'>
-        <Button className='w-12 h-9 hidden sm:inline' color='gray' pill>
-        <IoMoonSharp />
+        <Button className='w-12 h-9 hidden sm:inline' color='gray' pill
+          onClick={()=> dispatch(toggleTheme())}>
+            {theme === 'light' ? <IoMoonSharp/> : <IoSunnySharp/>}
         </Button>
       {currentUser ? (
         <Dropdown 
