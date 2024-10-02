@@ -5,6 +5,7 @@ import { FaSearch } from "react-icons/fa";
 import { IoMoonSharp, IoSunnySharp } from "react-icons/io5";
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../redux/theme/themeSlice';
+import { singoutSuccess } from '../redux/user/userSlice';
 
 const Header = () => {
 
@@ -12,6 +13,26 @@ const Header = () => {
   const {currentUser} = useSelector(state => state.user);
   const dispatch = useDispatch();
   const { theme } = useSelector((state)=> state.theme);
+
+
+  const handleSingout = async () => {
+    try {
+      const res = await fetch('/api/user/singout', {
+        method: 'POST',
+      });
+
+      const data = await res.json();
+
+      if(!res.ok){
+        console.log(data.message)
+      } else {
+        dispatch(singoutSuccess())
+      }
+
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 
   return (
     <Navbar className='border-b-2'>
@@ -66,7 +87,7 @@ const Header = () => {
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <Dropdown.Divider/>
-            <Dropdown.Item>Sing Out</Dropdown.Item>
+            <Dropdown.Item onClick={handleSingout}>Sing Out</Dropdown.Item>
         </Dropdown>
       ) : 
         (

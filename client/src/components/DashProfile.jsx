@@ -16,7 +16,8 @@ import {
   updateFailure,
   deleteUserStart,
   deleteUserSuccess,
-  deleteUserFailure
+  deleteUserFailure,
+  singoutSuccess
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { IoWarningOutline } from "react-icons/io5";
@@ -161,6 +162,25 @@ const DashProfile = () => {
     }
   };
 
+  const handleSingout = async () => {
+    try {
+      const res = await fetch('/api/user/singout', {
+        method: 'POST',
+      });
+
+      const data = await res.json();
+
+      if(!res.ok){
+        console.log(data.message)
+      } else {
+        dispatch(singoutSuccess())
+      }
+
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-lime-800 text-3xl">
@@ -248,7 +268,7 @@ const DashProfile = () => {
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
           Delete Account
         </span>
-        <span className="cursor-pointer">Sing Out</span>
+        <span onClick={handleSingout} className="cursor-pointer">Sing Out</span>
       </div>
 
       {updateUserSuccess && (
